@@ -82,8 +82,7 @@ async def talk_event_remind(callback: CallbackQuery, state: FSMContext):
     await state.update_data(lesson_remind = callback.data)
     data = await state.get_data()
     new_lesson_text = await menage_text.add_lesson_text(data)
-    show_cache = f'Нагадування заняття|№Тижня|День тижня|Час початку|Заняття|link\n{data.get("lesson_remind")} --- {data.get("lesson_week_type")} --- {data.get("lesson_day")} --- {data.get("lesson_time")} --- {data.get("lesson_description")} --- <a href = "{data.get("lesson_link")}">link</a>'
-    await callback.message.edit_text(text = show_cache, parse_mode = "HTML", reply_markup = final_add_inline_kb)
+    await callback.message.edit_text(text = new_lesson_text, parse_mode = "HTML", reply_markup = final_add_inline_kb)
     await state.set_state(AddNewLessonCache.lesson_end)
 
 

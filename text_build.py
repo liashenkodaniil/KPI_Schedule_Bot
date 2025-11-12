@@ -18,7 +18,22 @@ class PerfomeText:
 
     # - Формування тексту інформації додавання нового заняття
     async def add_lesson_text(self, new_data):
-        new_lesson_text = f''''''
+        new_lesson_text = f'''<blockquote><b>Нагадування: </b></blockquote>'''
+        if new_data.get("lesson_remind") == "YES":
+            new_lesson_text += f'''\n✅'''
+        else:
+            new_lesson_text += f'''\n❌'''
+        new_lesson_text += f'''\n\n<blockquote><b>Тиждень: </b></blockquote>'''
+        new_lesson_text += f'''\n<i>{new_data.get("lesson_week_type")}</i>'''
+        new_lesson_text += f'''\n\n<blockquote><b>День: </b></blockquote>'''
+        new_lesson_text += f'''\n<i>{new_data.get("lesson_day")}</i>'''
+        new_lesson_text += f'''\n\n<blockquote><b>Час: </b></blockquote>'''
+        new_lesson_text += f'''\n<i>{new_data.get("lesson_time")}</i>'''
+        new_lesson_text += f'''\n\n<blockquote><b>Пара: </b></blockquote>'''
+        new_lesson_text += f'''\n<i>{new_data.get("lesson_description")}</i>'''
+        if new_data.get("lesson_link") != "None":
+            new_lesson_text += f'''\n\n<blockquote><b>Посилання: </b></blockquote>'''
+            new_lesson_text += f'''\n<a href = "{new_data.get("lesson_link")}"><i>Посилання на пару</i></a>'''
         return new_lesson_text
 
     # - Формування тексту повідомлення-нагадування
