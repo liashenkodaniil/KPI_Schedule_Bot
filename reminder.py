@@ -10,6 +10,31 @@ import asyncio
 async def remind_lesson(time: str, bot: Bot):
     delete_list = []
     users = await control_database.get_users_remind_lesson(time)
+
+    for user in users:
+        user_id = user["chat_member_id"]
+        remind_text = await menage_text.remind_lesson_before_text(user["lesson_description"], "15хв.")
+        message = await bot.send_message(chat_id = user_id, text = remind_text, parse_mode = "HTML")
+        delete_list.append((user_id, message.message_id))
+    await asyncio.sleep(600)
+    for message in delete_list:
+        await bot.delete_message(chat_id = message[0], message_id = message[1])
+
+    delete_list = []
+    users = await control_database.get_users_remind_lesson(time)
+
+    for user in users:
+        user_id = user["chat_member_id"]
+        remind_text = await menage_text.remind_lesson_before_text(user["lesson_description"], "5хв.")
+        message = await bot.send_message(chat_id = user_id, text = remind_text, parse_mode = "HTML")
+        delete_list.append((user_id, message.message_id))
+    await asyncio.sleep(300)
+    for message in delete_list:
+        await bot.delete_message(chat_id = message[0], message_id = message[1])
+
+    delete_list = []
+    users = await control_database.get_users_remind_lesson(time)
+
     for user in users:
         user_id = user["chat_member_id"]
         remind_text = await menage_text.remind_lesson_start_text(user["lesson_description"], time)

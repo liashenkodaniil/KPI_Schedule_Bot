@@ -36,7 +36,13 @@ class PerfomeText:
             new_lesson_text += f'''\n<a href = "{new_data.get("lesson_link")}"><i>Посилання на пару</i></a>'''
         return new_lesson_text
 
-    # - Формування тексту повідомлення-нагадування
+    # - Формування тексту повідолмення-нагадування про початок заняття за декілька хвилин до самого заняття
+    async def remind_lesson_before_text(self, lesson_description, time):
+        remind_text = f'''<blockquote><b>❕УВАГА, через {time} розпочнеться заняття:</b></blockquote>'''
+        remind_text += f'''\n\n<i>{lesson_description}</i>'''
+        return remind_text
+
+    # - Формування тексту повідомлення-нагадування про конкретний початок заняття
     async def remind_lesson_start_text(self, lesson_description, time):
         remind_text = f'''<blockquote><b>🔔 Розпочалась пара</b></blockquote>'''
         remind_text += f'''\n\n<code><b>{time}</b></code>      <b>{lesson_description}</b>'''

@@ -35,13 +35,13 @@ async def main():
     disp.include_router(main_router)
 
     # - Запуск регулярної фонової задачі для надсилання нагадувань про початок самої пари
-    scheduler.add_job(remind_lesson, trigger = "cron", hour = 8, minute = 30, kwargs = {'time': '08:30', 'bot': bot})
-    scheduler.add_job(remind_lesson, trigger = "cron", hour = 10, minute = 25, kwargs = {'time': '10:25', 'bot': bot})
-    scheduler.add_job(remind_lesson, trigger = "cron", hour = 12, minute = 20, kwargs = {'time': '12:20', 'bot': bot})
-    scheduler.add_job(remind_lesson, trigger = "cron", hour = 14, minute = 15, kwargs = {'time': '14:15', 'bot': bot})
-    scheduler.add_job(remind_lesson, trigger = "cron", hour = 16, minute = 10, kwargs = {'time': '16:10', 'bot': bot})
-    scheduler.add_job(remind_lesson, trigger = "cron", hour = 18, minute = 5, kwargs = {'time': '18:05', 'bot': bot})
-    scheduler.add_job(remind_lesson, trigger = "cron", hour = 20, minute = 0, kwargs = {'time': '20:00', 'bot': bot})
+    scheduler.add_job(remind_lesson, trigger = "cron", hour = 14, minute = 45, kwargs = {'time': '15:00', 'bot': bot})
+    scheduler.add_job(remind_lesson, trigger = "cron", hour = 10, minute = 10, kwargs = {'time': '10:25', 'bot': bot})
+    scheduler.add_job(remind_lesson, trigger = "cron", hour = 12, minute = 5, kwargs = {'time': '12:20', 'bot': bot})
+    scheduler.add_job(remind_lesson, trigger = "cron", hour = 14, minute = 0, kwargs = {'time': '14:15', 'bot': bot})
+    scheduler.add_job(remind_lesson, trigger = "cron", hour = 15, minute = 55, kwargs = {'time': '16:10', 'bot': bot})
+    scheduler.add_job(remind_lesson, trigger = "cron", hour = 17, minute = 50, kwargs = {'time': '18:05', 'bot': bot})
+    scheduler.add_job(remind_lesson, trigger = "cron", hour = 18, minute = 45, kwargs = {'time': '20:00', 'bot': bot})
     scheduler.start()
 
     # - Запуск бота (подібний варіант придатний для тестування -> необхідно виконати перехід на webhook)
