@@ -1,0 +1,31 @@
+### --- Модуль для побудови повідомлень на основі отриманих даних --- ###
+
+
+class PerfomeText:
+    # - Формування тексту розкладу конкретного дня
+    async def day_schedule_text(self, type_schedule: str, schedule: list):
+        text_schedule = f'''<blockquote><i>{type_schedule}</i></blockquote>'''
+        text_schedule += f'''\n<blockquote><b>ТИЖДЕНЬ №{schedule[0]}</b>\n<b>{schedule[1]}:</b></blockquote>'''
+        time = ""
+        for lesson in schedule[2]:
+            if time != lesson["lesson_time"]:
+                time = lesson["lesson_time"]
+                text_schedule += f'''\n\n<blockquote><b>    {lesson["lesson_time"]}</b></blockquote>'''
+            text_schedule += f'''\n<b><i>{lesson["lesson_description"]}</i></b>    '''
+            if lesson["lesson_link"] != "None":
+                text_schedule += f'''<a href = "{lesson["lesson_link"]}"><i>посилання</i></a>'''
+        return text_schedule
+
+    # - Формування тексту інформації додавання нового заняття
+    async def add_lesson_text(self, new_data):
+        new_lesson_text = f''''''
+        return new_lesson_text
+
+    # - Формування тексту повідомлення-нагадування
+    async def remind_lesson_start_text(self, lesson_description, time):
+        remind_text = f'''<blockquote><b>🔔 Розпочалась пара</b></blockquote>'''
+        remind_text += f'''\n\n<code><b>{time}</b></code>      <b>{lesson_description}</b>'''
+        return remind_text
+
+
+menage_text = PerfomeText()
