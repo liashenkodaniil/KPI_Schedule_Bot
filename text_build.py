@@ -57,6 +57,12 @@ class PerfomeText:
         remind_text = f'''<blockquote><b>🔔 Розпочалась пара</b></blockquote>'''
         remind_text += f'''\n\n<code><b>{time}</b></code>      <b>{lesson_description}</b>'''
         return remind_text
+    
+    # - Формування тексту нагадування про День народження
+    async def remind_birthday(self, name):
+        remind_text = f'''<blockquote>🎉🎉🎉 Сьогодні вітаємо <i>{name}</i> !</blockquote>'''
+        remind_text += f'''\n\n<i>У цієї чудової людини сьогодні День народження!\n\n</i>'''
+        return remind_text
 
 
 menage_text = PerfomeText()

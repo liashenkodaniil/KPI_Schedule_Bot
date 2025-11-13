@@ -38,23 +38,32 @@ birthday_inline_kb = InlineKeyboardMarkup(
 mounth_inline_kb = InlineKeyboardMarkup(
     inline_keyboard = [
         [
-            InlineKeyboardButton(text = "Січ.", callback_data = "Січня"),
-            InlineKeyboardButton(text = "Лют.", callback_data = "Лютого"),
-            InlineKeyboardButton(text = "Бер.", callback_data = "Березня"),
-            InlineKeyboardButton(text = "Квіт.", callback_data = "Квітня"),
-            InlineKeyboardButton(text = "Трав.", callback_data = "Травня"),
-            InlineKeyboardButton(text = "Черв.", callback_data = "Червня"),
+            InlineKeyboardButton(text = "Січ.", callback_data = "Січень"),
+            InlineKeyboardButton(text = "Лют.", callback_data = "Лютий"),
+            InlineKeyboardButton(text = "Бер.", callback_data = "Березень"),
+            InlineKeyboardButton(text = "Квіт.", callback_data = "Квітень"),
+            InlineKeyboardButton(text = "Трав.", callback_data = "Травень"),
+            InlineKeyboardButton(text = "Черв.", callback_data = "Червень"),
         ],
         [
-            InlineKeyboardButton(text = "Лип.", callback_data = "Липня"),
-            InlineKeyboardButton(text = "Серп.", callback_data = "Серпня"),
-            InlineKeyboardButton(text = "Вер.", callback_data = "Вересня"),
-            InlineKeyboardButton(text = "Жовт.", callback_data = "Жовтня"),
-            InlineKeyboardButton(text = "Лист.", callback_data = "Листопада"),
-            InlineKeyboardButton(text = "Груд.", callback_data = "Грудня"),
+            InlineKeyboardButton(text = "Лип.", callback_data = "Липень"),
+            InlineKeyboardButton(text = "Серп.", callback_data = "Серпень"),
+            InlineKeyboardButton(text = "Вер.", callback_data = "Вересень"),
+            InlineKeyboardButton(text = "Жовт.", callback_data = "Жовтень"),
+            InlineKeyboardButton(text = "Лист.", callback_data = "Листопад"),
+            InlineKeyboardButton(text = "Груд.", callback_data = "Грудень"),
         ]
     ]
 )
+
+
+# - Ініціалізація підклавітаури підтвердження інформації
+ok_inline_kb = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [InlineKeyboardButton(text = "Зрозуміло", callback_data = "ok")]
+    ]
+)
+
 
 # - Ініціалізація підклавіатури підтвердження додавання нового Дня народження
 add_new_birthday_inline_kb = InlineKeyboardMarkup(

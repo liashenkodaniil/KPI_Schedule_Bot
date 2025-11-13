@@ -2,7 +2,7 @@
 from handlers.start_actions import start_router
 from handlers.user_handlers.main_handlers import main_router
 from Database_control import control_database
-from reminder import remind_lesson
+from reminder import remind_lesson, remind_birthday
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from aiogram import Bot, Dispatcher
 import asyncio
@@ -33,6 +33,9 @@ async def main():
     # - Підключення необхідних роутерів
     disp.include_router(start_router)
     disp.include_router(main_router)
+
+    # - Запуск регулярної фонової задачі для надсилання нагадувань про День народження
+    scheduler.add_job(remind_birthday, trigger = "cron", hour = 13, minute = 0, kwargs = {'bot': bot})
 
     # - Запуск регулярної фонової задачі для надсилання нагадувань про початок самої пари
     scheduler.add_job(remind_lesson, trigger = "cron", hour = 8, minute = 15, kwargs = {'time': '08:30', 'bot': bot})

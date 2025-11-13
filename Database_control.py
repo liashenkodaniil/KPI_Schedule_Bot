@@ -218,11 +218,12 @@ class Databases:
         add_script = 'INSERT INTO public."Birthdays" (chat_member_id, birthday_member_id, birthday, birthmounth) VALUES ($1, $2, $3, $4);'
         await self.pg_storage.execute(add_script, user_id, new_data.get("birth_member_id"), int(new_data.get("birth_day")), new_data.get("birth_mounth"))
 
-    # - Видалення Дня народження 
-
-
-    # - Перегляд усіх днів народження
-        
+    # - Отримання списку користувачів, котрим необхідно нагадати за День народження
+    async def get_users_remind_birthday(self, today, month):
+        get_script = 'SELECT chat_member_id, birthday_member_id FROM public."Birthdays" WHERE birthday = $1 and birthmounth = $2'
+        records = await self.pg_storage.fetch(get_script, int(today), str(month))
+        users_list = [dict(record) for record in records]
+        return users_list
 
 # - Створення екземпляра класу Database для подальшого керування сховищами
 control_database = Databases()

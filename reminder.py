@@ -1,15 +1,29 @@
 ### --- Модуль для надсилання нагадувань про початок пари --- ###
 from Database_control import control_database
+from Keyboards import ok_inline_kb
 from text_build import menage_text
 from aiogram import Bot
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+import datetime
 import asyncio
 
 
 # - Функція нагадування про День народження
 async def remind_birthday(bot: Bot):
-    
-    pass
+    today_date = datetime.date.today()
+    month_number = today_date.month 
+    months_lookup = [
+        "Січень", "Лютий", "Березень", "Квітень", "Травень", "Червень",
+        "Липень", "Серпень", "Вересень", "Жовтень", "Листопад", "Грудень"
+    ]
+    mounth = months_lookup[month_number - 1]
+    today = today_date.day
+    users = await control_database.get_users_remind_birthday(today, mounth)
+    for user in users:
+        photo = (await bot.get_user_profile_photos(user_id = user["birthday_member_id"])).photos[0][-1]
+        name = await bot.get_chat(chat_id = user["birthday_member_id"])
+        text = await menage_text.remind_birthday(name.full_name)
+        await bot.send_photo(chat_id = user["chat_member_id"], photo = photo.file_id, caption = text, parse_mode = "HTML", reply_markup = ok_inline_kb)
 
 
 # - Функція нагадування про початок занять

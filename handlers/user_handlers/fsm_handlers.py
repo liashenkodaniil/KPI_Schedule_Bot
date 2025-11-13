@@ -6,7 +6,7 @@ from text_build import menage_text
 from filters import IsMessageLinkFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
-from aiogram import Router
+from aiogram import Router, F
 
 
 fsm_router = Router()
@@ -184,6 +184,11 @@ async def talk_delete_yes_no(callback: CallbackQuery, state: FSMContext):
 ##################################
 ### - ХЕНДЛЕРИ СОРТУВАЛЬНИКИ - ###
 ##################################
+# - Використовуємо даний хенлер для відлову команди факту кінцевого читання повідомлення
+@fsm_router.callback_query(F.data == "ok")
+async def delete_user_readen_rubbish(callback: CallbackQuery):
+    await callback.message.delete()
+
 # - Використовуємо даний хендлер аби видаляти повідомлення, що не пройшли жодної перевірки
 @fsm_router.message()
 async def delete_user_rubbish(message: Message):
