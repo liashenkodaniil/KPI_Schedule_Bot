@@ -26,7 +26,7 @@ class AddNewBirthdayCache(StatesGroup):
 
 # - Машина станів FSM (Видалення дня народження)
 class DeleteBirthdayCache(StatesGroup):
-    pass
+    del_moment = State()
 
 
 # - Машина станів FSM (Додача нового заняття)
@@ -224,6 +224,18 @@ class Databases:
         records = await self.pg_storage.fetch(get_script, int(today), str(month))
         users_list = [dict(record) for record in records]
         return users_list
+
+    # - Отримання іфнормації задля генерування клавіатури видалення святкових подій
+    async def get_info_delete_birthdays(self, user_id):
+        get_script = 'SELECT chat_member_id, birthday_member_id FROM public."Birthdays" WHERE chat_member_id = $1'
+        records = await self.pg_storage.fetch(get_script, user_id)
+        del_list = [dict(record) for record in records]
+        return del_list
+    
+    # - Функція видалення Дня народження
+    async def delete_birthday(self, birthday_member_id):
+        delete_script = 'DELETE FROM public."Birthdays" WHERE birthday_member_id = $1'
+        await self.pg_storage.execute(delete_script, birthday_member_id)
 
 # - Створення екземпляра класу Database для подальшого керування сховищами
 control_database = Databases()

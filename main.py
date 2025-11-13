@@ -35,7 +35,7 @@ async def main():
     disp.include_router(main_router)
 
     # - Запуск регулярної фонової задачі для надсилання нагадувань про День народження
-    scheduler.add_job(remind_birthday, trigger = "cron", hour = 13, minute = 0, kwargs = {'bot': bot})
+    scheduler.add_job(remind_birthday, trigger = "cron", hour = 10, minute = 0, kwargs = {'bot': bot})
 
     # - Запуск регулярної фонової задачі для надсилання нагадувань про початок самої пари
     scheduler.add_job(remind_lesson, trigger = "cron", hour = 8, minute = 15, kwargs = {'time': '08:30', 'bot': bot})

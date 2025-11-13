@@ -1,5 +1,5 @@
 ### --- Модуль обробки підкоманд користувача --- ###
-from Keyboards import week_type_inline_kb, back_inline_kb, show_schedule_inline_kb
+from Keyboards import week_type_inline_kb, back_inline_kb, show_schedule_inline_kb, make_inline_del_birth_keyb
 from Database_control import control_database, AddNewLessonCache, DeleteLessonCache, AddNewBirthdayCache, DeleteBirthdayCache
 from text_build import menage_text
 from .fsm_handlers import fsm_router
@@ -31,8 +31,10 @@ async def echo_add_birth(callback: CallbackQuery, state: FSMContext):
 
 # - Підкоманда видалення дня народження
 @commands_router.callback_query(F.data == "delete_birth_call")
-async def echo_delete_birth(callback: CallbackQuery):
-    pass
+async def echo_delete_birth(callback: CallbackQuery, state: FSMContext):
+    del_keyb = await make_inline_del_birth_keyb(await control_database.get_info_delete_birthdays(callback.from_user.id), callback.message.bot)
+    await callback.message.edit_text(text = "<blockquote><b>Кого ви бажаєте видалити ? 😭</b></blockquote>", parse_mode = "HTML", reply_markup = del_keyb)
+    await state.set_state(DeleteBirthdayCache.del_moment)
 
 
 ### --- ПІДКОМАНДИ ПЕРЕГЛЯДУ РОЗКЛАДУ --- ###

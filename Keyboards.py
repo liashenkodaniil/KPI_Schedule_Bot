@@ -4,6 +4,7 @@ from aiogram.types import KeyboardButton
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.types import InlineKeyboardButton
 from Database_control import control_database
+from aiogram import Bot
 
 
 ############################################
@@ -175,4 +176,12 @@ async def make_inline_del_keyb(list_lessons):
     delete_keyb = []
     for lesson in list_lessons:
         delete_keyb.append([InlineKeyboardButton(text = lesson["lesson_time"] + " 👉 " + lesson["lesson_description"], callback_data = str(lesson["lesson_id"]))])
+    return InlineKeyboardMarkup(inline_keyboard = delete_keyb)
+
+
+# - Функція створення динамічної клавіатури для видалення дня народження
+async def make_inline_del_birth_keyb(list_birthdays: list, bot: Bot):
+    delete_keyb = []
+    for birthday in list_birthdays:
+        delete_keyb.append([InlineKeyboardButton(text = f"👉 {(await bot.get_chat(birthday["birthday_member_id"])).full_name}", callback_data = str(birthday["birthday_member_id"]))])
     return InlineKeyboardMarkup(inline_keyboard = delete_keyb)

@@ -65,6 +65,17 @@ async def talk_birth_end(callback: CallbackQuery, state: FSMContext):
 
 
 ### - ДІАЛОГ НА ВИДАЛЕННЯ ДНЯ НАРОДЖЕННЯ - ###
+# - Обрання користувача для котрого ми хочемо видалити день народження
+@fsm_router.callback_query(DeleteBirthdayCache.del_moment)
+async def talk_birthday_del(callback: CallbackQuery, state: FSMContext):
+    await control_database.delete_birthday(int(callback.data))
+    await state.clear()
+    await state.update_data(
+        message_id = callback.message.message_id,
+        chat_id = callback.message.chat.id
+    )
+    await callback.message.edit_text(text = "🎂 Бажаєте когось привітати?", reply_markup = birthday_inline_kb)
+
 
 ### - ДІАЛОГ НА ДОДАЧУ ЗАНЯТТЯ - ###
 # - Обираємо тиждень
