@@ -27,4 +27,19 @@ CREATE TABLE IF NOT EXISTS public."Lesson"
     NOT VALID
 );
 
+CREATE TABLE IF NOT EXISTS public."Birthdays"(
+	birthday_id BIGINT GENERATED ALWAYS AS IDENTITY,
+	chat_member_id BIGINT NOT NULL,
+	birthday_member_id BIGINT NOT NULL,
+	birthday int NOT NULL,
+	birthmounth character varying(15) NOT NULL,
+	CONSTRAINT "birthday_id" PRIMARY KEY (birthday_id),
+
+	CONSTRAINT "chat_member_id_FK" FOREIGN KEY (chat_member_id)
+	REFERENCES public."Chat member" (chat_member_id) MATCH SIMPLE
+	ON UPDATE NO ACTION
+    ON DELETE NO ACTION
+    NOT VALID
+);
+
 END;

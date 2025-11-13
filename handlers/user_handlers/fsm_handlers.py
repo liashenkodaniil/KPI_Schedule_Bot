@@ -19,7 +19,7 @@ fsm_router = Router()
 # - Обираємо іменинника
 @fsm_router.message(AddNewBirthdayCache.birth_member_id)
 async def talk_birth_member_id(message: Message, state: FSMContext):
-    await state.update_data(birth_member_id = message.text)
+    await state.update_data(birth_member_id = int(message.text))
     data = await state.get_data()
     await message.delete()
     await message.bot.edit_message_text(chat_id = data.get("chat_id"), message_id = data.get("message_id"), text = "Оберіть місяць: ", reply_markup = mounth_inline_kb)

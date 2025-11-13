@@ -215,8 +215,12 @@ class Databases:
     
     # - Додавання нового Дня народження
     async def add_birthday(self, new_data, user_id):
-        pass
+        add_script = 'INSERT INTO public."Birthdays" (chat_member_id, birthday_member_id, birthday, birthmounth) VALUES ($1, $2, $3, $4);'
+        await self.pg_storage.execute(add_script, user_id, new_data.get("birth_member_id"), int(new_data.get("birth_day")), new_data.get("birth_mounth"))
+
     # - Видалення Дня народження 
+
+
     # - Перегляд усіх днів народження
         
 
