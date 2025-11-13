@@ -35,6 +35,14 @@ birthday_inline_kb = InlineKeyboardMarkup(
 )
 
 
+# - Ініціалізація клавіатури повернення на попередній стан
+back_birth_inline_kb = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [InlineKeyboardButton(text = "👈 Назад", callback_data = "back_birth")]
+    ]
+)
+
+
 # - Ініціалізація підклавіатури місяців
 mounth_inline_kb = InlineKeyboardMarkup(
     inline_keyboard = [

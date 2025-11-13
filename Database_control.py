@@ -226,8 +226,8 @@ class Databases:
         return users_list
 
     # - Отримання іфнормації задля генерування клавіатури видалення святкових подій
-    async def get_info_delete_birthdays(self, user_id):
-        get_script = 'SELECT chat_member_id, birthday_member_id FROM public."Birthdays" WHERE chat_member_id = $1'
+    async def get_info_birthdays(self, user_id):
+        get_script = 'SELECT * FROM public."Birthdays" WHERE chat_member_id = $1'
         records = await self.pg_storage.fetch(get_script, user_id)
         del_list = [dict(record) for record in records]
         return del_list

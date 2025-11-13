@@ -63,6 +63,14 @@ class PerfomeText:
         remind_text = f'''<blockquote>🎉🎉🎉 Сьогодні вітаємо <i>{name}</i> !</blockquote>'''
         remind_text += f'''\n\n<i>У цієї чудової людини сьогодні День народження!\n\n</i>'''
         return remind_text
+    
+    # - Формування тексту усіх записів днів народжень
+    async def all_birthdays_text(self, list_user, user_id, bot: Bot):
+        birthdays_text = f'''<blockquote><b>🎂 <i>Ваш список іменинників</i> 🎂</b></blockquote>'''
+        for birthday in list_user:
+            birthdays_text += f'''\n\n<blockquote><i>🎂 {birthday["birthday"]} {birthday["birthmounth"]}</i></blockquote>'''
+            birthdays_text += f'''\n<b><i>{(await bot.get_chat(chat_id = birthday["birthday_member_id"])).full_name}</i></b>'''
+        return birthdays_text
 
 
 menage_text = PerfomeText()

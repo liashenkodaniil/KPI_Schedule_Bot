@@ -1,5 +1,6 @@
 ### --- Модуль обробки підкоманд користувача --- ###
-from Keyboards import week_type_inline_kb, back_inline_kb, show_schedule_inline_kb, make_inline_del_birth_keyb
+from Keyboards import week_type_inline_kb, back_inline_kb, show_schedule_inline_kb, make_inline_del_birth_keyb, back_birth_inline_kb
+from Keyboards import birthday_inline_kb
 from Database_control import control_database, AddNewLessonCache, DeleteLessonCache, AddNewBirthdayCache, DeleteBirthdayCache
 from text_build import menage_text
 from .fsm_handlers import fsm_router
@@ -19,7 +20,8 @@ commands_router.include_router(fsm_router)
 # - Підкоманда перегляду урочистих подій
 @commands_router.callback_query(F.data == "look_birth_call")
 async def echo_look_birth(callback: CallbackQuery):
-    pass
+    birthdays_text = await menage_text.all_birthdays_text(await control_database.get_info_birthdays(callback.message.chat.id), callback.message.chat.id, callback.message.bot)
+    await callback.message.edit_text(text = birthdays_text, parse_mode = "HTML", reply_markup = back_birth_inline_kb)
 
 
 # - Підкоманда додавання дня народження
@@ -32,9 +34,15 @@ async def echo_add_birth(callback: CallbackQuery, state: FSMContext):
 # - Підкоманда видалення дня народження
 @commands_router.callback_query(F.data == "delete_birth_call")
 async def echo_delete_birth(callback: CallbackQuery, state: FSMContext):
-    del_keyb = await make_inline_del_birth_keyb(await control_database.get_info_delete_birthdays(callback.from_user.id), callback.message.bot)
+    del_keyb = await make_inline_del_birth_keyb(await control_database.get_info_birthdays(callback.from_user.id), callback.message.bot)
     await callback.message.edit_text(text = "<blockquote><b>Кого ви бажаєте видалити ? 😭</b></blockquote>", parse_mode = "HTML", reply_markup = del_keyb)
     await state.set_state(DeleteBirthdayCache.del_moment)
+
+
+# - Підкоманда повернення назад до операцій днів народження
+@commands_router.callback_query(F.data == "back_birth")
+async def echo_back_birth(callback: CallbackQuery):
+    await callback.message.edit_text(text = "🎂 Бажаєте когось привітати?", reply_markup = birthday_inline_kb)
 
 
 ### --- ПІДКОМАНДИ ПЕРЕГЛЯДУ РОЗКЛАДУ --- ###
