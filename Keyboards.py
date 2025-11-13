@@ -13,7 +13,8 @@ from Database_control import control_database
 main_kb = ReplyKeyboardMarkup(
     keyboard = [
         [KeyboardButton(text = "🗓 Переглянути розклад занять")],
-        [KeyboardButton(text = "✍️ Редагувати розклад")]
+        [KeyboardButton(text = "✍️ Редагувати розклад")],
+        [KeyboardButton(text = "🎂 Дні народження")]
     ],
     resize_keyboard = True
 )
@@ -22,6 +23,46 @@ main_kb = ReplyKeyboardMarkup(
 ######################################
 ### - ІНІЦІАЛІЗАЦІЯ ПІДКЛАВІАТУР - ###
 ######################################
+# - Ініціалізація підклавіатури роботи зі святами
+birthday_inline_kb = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [InlineKeyboardButton(text = "🗓 Переглянути дні народження 🎂", callback_data = "look_birth_call")],
+        [InlineKeyboardButton(text = "✍️ Додати день народження 🎂", callback_data = "add_birth_call")],
+        [InlineKeyboardButton(text = "🗑 Видалити день народження 🎂", callback_data = "delete_birth_call")],
+        [InlineKeyboardButton(text = "❌ Обірвати процес", callback_data = "end_call")]
+    ]
+)
+
+
+# - Ініціалізація підклавіатури місяців
+mounth_inline_kb = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [
+            InlineKeyboardButton(text = "Січ.", callback_data = "Січня"),
+            InlineKeyboardButton(text = "Лют.", callback_data = "Лютого"),
+            InlineKeyboardButton(text = "Бер.", callback_data = "Березня"),
+            InlineKeyboardButton(text = "Квіт.", callback_data = "Квітня"),
+            InlineKeyboardButton(text = "Трав.", callback_data = "Травня"),
+            InlineKeyboardButton(text = "Черв.", callback_data = "Червня"),
+        ],
+        [
+            InlineKeyboardButton(text = "Лип.", callback_data = "Липня"),
+            InlineKeyboardButton(text = "Серп.", callback_data = "Серпня"),
+            InlineKeyboardButton(text = "Вер.", callback_data = "Вересня"),
+            InlineKeyboardButton(text = "Жовт.", callback_data = "Жовтня"),
+            InlineKeyboardButton(text = "Лист.", callback_data = "Листопада"),
+            InlineKeyboardButton(text = "Груд.", callback_data = "Грудня"),
+        ]
+    ]
+)
+
+# - Ініціалізація підклавіатури підтвердження додавання нового Дня народження
+add_new_birthday_inline_kb = InlineKeyboardMarkup(
+    inline_keyboard = [
+        [InlineKeyboardButton(text = "✅ Додати новий День народження", callback_data = "add_new_birthday_final")]
+    ]
+)
+
 # - Ініціалізація підклавіатури перегляду тижневого розкладу
 show_schedule_inline_kb = InlineKeyboardMarkup(
     inline_keyboard = [
@@ -70,7 +111,7 @@ day_inline_kb = InlineKeyboardMarkup(
         [InlineKeyboardButton(text = "Понеділок", callback_data = "Понеділок")],
         [InlineKeyboardButton(text = "Вівторок", callback_data = "Вівторок")],
         [InlineKeyboardButton(text = "Середа", callback_data = "Середа")],
-        [InlineKeyboardButton(text = "Четверг", callback_data = "Четверг")],
+        [InlineKeyboardButton(text = "Четверг", callback_data = "Четвер")],
         [InlineKeyboardButton(text = "П'ятниця", callback_data = "П'ятниця")],
         [InlineKeyboardButton(text = "Субота", callback_data = "Субота")],
         [InlineKeyboardButton(text = "Неділя", callback_data = "Неділя")]

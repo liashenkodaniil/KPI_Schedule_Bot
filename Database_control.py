@@ -16,6 +16,19 @@ class MessageManagerCache(StatesGroup):
     chat_id = State()
 
 
+# - Машина станів FSM (Додача нового дня народження)
+class AddNewBirthdayCache(StatesGroup):
+    birth_member_id = State()
+    birth_day = State()
+    birth_mounth = State()
+    birth_end = State()
+
+
+# - Машина станів FSM (Видалення дня народження)
+class DeleteBirthdayCache(StatesGroup):
+    pass
+
+
 # - Машина станів FSM (Додача нового заняття)
 class AddNewLessonCache(StatesGroup):
     lesson_week_type = State()
@@ -68,7 +81,8 @@ class Databases:
         schedule = [dict(record) for record in records]
         for lesson in schedule:
             lesson["lesson_time"] = str(lesson["lesson_time"])[:5]
-        await self.redis_pool.set(key, json.dumps(schedule), ex = 3600)
+        if schedule:
+            await self.redis_pool.set(key, json.dumps(schedule), ex = 3600)
         return schedule
 
     # - Початковий стартовий скрипт для створення бази даних
@@ -198,6 +212,12 @@ class Databases:
         records = await self.pg_storage.fetch(get_users_script, "YES", week_type, day, (datetime.datetime.strptime(time, "%H:%M").time()).replace(tzinfo = datetime.timezone(datetime.timedelta(hours = 2))))
         users = [dict(record) for record in records]
         return users
+    
+    # - Додавання нового Дня народження
+    async def add_birthday(self, new_data, user_id):
+        pass
+    # - Видалення Дня народження 
+    # - Перегляд усіх днів народження
         
 
 # - Створення екземпляра класу Database для подальшого керування сховищами

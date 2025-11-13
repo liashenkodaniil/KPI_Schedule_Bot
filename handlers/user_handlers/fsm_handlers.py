@@ -1,7 +1,7 @@
 ### --- Модуль обробки діалогів користувача --- ###
-from Keyboards import day_inline_kb, para_time_inline_kb, none_link, yes_no_inline_kb
-from Keyboards import final_add_inline_kb, events_inline_kb, make_inline_del_keyb
-from Database_control import control_database, AddNewLessonCache, DeleteLessonCache
+from Keyboards import day_inline_kb, para_time_inline_kb, none_link, yes_no_inline_kb, mounth_inline_kb, birthday_inline_kb
+from Keyboards import final_add_inline_kb, events_inline_kb, make_inline_del_keyb, add_new_birthday_inline_kb
+from Database_control import control_database, AddNewLessonCache, DeleteLessonCache, AddNewBirthdayCache, DeleteBirthdayCache
 from text_build import menage_text
 from filters import IsMessageLinkFilter
 from aiogram.fsm.context import FSMContext
@@ -15,6 +15,57 @@ fsm_router = Router()
 #####################################################
 ### - ОБРОБКА КОМАНД ВІДПОВІДНО АВТОМАТУ СТАНІВ - ###
 #####################################################
+### - ДІАЛОГ НА ДОДАЧУ ДНЯ НАРОДЖЕННЯ - ###
+# - Обираємо іменинника
+@fsm_router.message(AddNewBirthdayCache.birth_member_id)
+async def talk_birth_member_id(message: Message, state: FSMContext):
+    await state.update_data(birth_member_id = message.text)
+    data = await state.get_data()
+    await message.delete()
+    await message.bot.edit_message_text(chat_id = data.get("chat_id"), message_id = data.get("message_id"), text = "Оберіть місяць: ", reply_markup = mounth_inline_kb)
+    await state.set_state(AddNewBirthdayCache.birth_mounth)
+
+
+# - Обираємо місяць
+@fsm_router.callback_query(AddNewBirthdayCache.birth_mounth)
+async def talk_birth_mounth(callback: CallbackQuery, state: FSMContext):
+    await state.update_data(birth_mounth = callback.data)
+    await callback.message.edit_text(text = "Введіть день (1-31): ")
+    await state.set_state(AddNewBirthdayCache.birth_day)
+
+
+# - Обираємо день
+@fsm_router.message(AddNewBirthdayCache.birth_day)
+async def talk_birth_day(message: Message, state: FSMContext):
+    await state.update_data(birth_day = message.text)
+    data = await state.get_data()
+    await message.bot.delete_message(chat_id = data.get("chat_id"), message_id = data.get("message_id"))
+    birthday_text = await menage_text.add_birthday_text(data, bot = message.bot)
+    await message.delete()
+    new_message = await message.bot.send_photo(chat_id = data.get("chat_id"), caption = birthday_text[0], photo = birthday_text[1], parse_mode = "HTML", reply_markup = add_new_birthday_inline_kb)
+    await state.update_data(message_id = new_message.message_id)
+    await state.set_state(AddNewBirthdayCache.birth_end)
+
+
+# - Кінець додавання дня народження
+@fsm_router.callback_query(AddNewBirthdayCache.birth_end)
+async def talk_birth_end(callback: CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    await control_database.add_birthday(data, callback.from_user.id)
+    await state.clear()
+    await callback.message.delete()
+    new_message = await callback.message.answer(
+        text = "🎂 Бажаєте когось привітати?", 
+        reply_markup = birthday_inline_kb
+    )
+    await state.update_data(
+        message_id = new_message.message_id,
+        chat_id = new_message.chat.id
+    )
+
+
+### - ДІАЛОГ НА ВИДАЛЕННЯ ДНЯ НАРОДЖЕННЯ - ###
+
 ### - ДІАЛОГ НА ДОДАЧУ ЗАНЯТТЯ - ###
 # - Обираємо тиждень
 @fsm_router.callback_query(AddNewLessonCache.lesson_week_type)

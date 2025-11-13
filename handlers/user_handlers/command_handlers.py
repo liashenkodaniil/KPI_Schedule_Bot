@@ -1,6 +1,6 @@
 ### --- Модуль обробки підкоманд користувача --- ###
 from Keyboards import week_type_inline_kb, back_inline_kb, show_schedule_inline_kb
-from Database_control import control_database, AddNewLessonCache, DeleteLessonCache
+from Database_control import control_database, AddNewLessonCache, DeleteLessonCache, AddNewBirthdayCache, DeleteBirthdayCache
 from text_build import menage_text
 from .fsm_handlers import fsm_router
 from aiogram.fsm.context import FSMContext
@@ -15,6 +15,26 @@ commands_router.include_router(fsm_router)
 #########################################
 ### - ОБРОБКА ПІДКОМАНД КОРИСТУВАЧА - ###
 #########################################
+### --- ПІДКОМАНДИ ДНЯ НАРОДЖЕННЯ --- ###
+# - Підкоманда перегляду урочистих подій
+@commands_router.callback_query(F.data == "look_birth_call")
+async def echo_look_birth(callback: CallbackQuery):
+    pass
+
+
+# - Підкоманда додавання дня народження
+@commands_router.callback_query(F.data == "add_birth_call")
+async def echo_add_birth(callback: CallbackQuery, state: FSMContext):
+    await callback.message.edit_text(text = "🥳 Введіть <b>id</b> іменинника: ", reply_markup = None, parse_mode = "HTML")
+    await state.set_state(AddNewBirthdayCache.birth_member_id)
+
+
+# - Підкоманда видалення дня народження
+@commands_router.callback_query(F.data == "delete_birth_call")
+async def echo_delete_birth(callback: CallbackQuery):
+    pass
+
+
 ### --- ПІДКОМАНДИ ПЕРЕГЛЯДУ РОЗКЛАДУ --- ###
 # - Підкоманда учорашнього розкладу
 @commands_router.callback_query(F.data == "yesterday_call")

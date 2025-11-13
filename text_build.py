@@ -1,4 +1,5 @@
 ### --- Модуль для побудови повідомлень на основі отриманих даних --- ###
+from aiogram import Bot
 
 
 class PerfomeText:
@@ -35,6 +36,15 @@ class PerfomeText:
             new_lesson_text += f'''\n\n<blockquote><b>Посилання: </b></blockquote>'''
             new_lesson_text += f'''\n<a href = "{new_data.get("lesson_link")}"><i>Посилання на пару</i></a>'''
         return new_lesson_text
+
+    # - Формування тексту інформації додавання нового дня народження
+    async def add_birthday_text(self, new_data, bot: Bot):
+        birthday_member = await bot.get_chat(chat_id = int(new_data.get("birth_member_id")))
+        birthday_member_photo = (await bot.get_user_profile_photos(user_id = new_data.get("birth_member_id"))).photos[0][-1]
+        birthday_text = f'''<blockquote><b>Бажаєте додати нагадування до Дня народження: </b></blockquote>'''
+        birthday_text += f'''🥳<blockquote><b>{new_data.get("birth_day")} {new_data.get("birth_mounth")}</b></blockquote>🥳'''
+        birthday_text += f'''\n🎂 <b><i>{birthday_member.full_name}</i></b> 🎂\n\n'''
+        return [birthday_text, birthday_member_photo.file_id]
 
     # - Формування тексту повідолмення-нагадування про початок заняття за декілька хвилин до самого заняття
     async def remind_lesson_before_text(self, lesson_description, time):

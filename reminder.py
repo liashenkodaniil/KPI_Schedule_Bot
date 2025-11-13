@@ -6,6 +6,12 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import asyncio
 
 
+# - Функція нагадування про День народження
+async def remind_birthday(bot: Bot):
+    
+    pass
+
+
 # - Функція нагадування про початок занять
 async def remind_lesson(time: str, bot: Bot):
     delete_list = []
