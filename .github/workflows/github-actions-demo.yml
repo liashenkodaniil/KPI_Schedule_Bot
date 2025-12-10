@@ -1,18 +1,71 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
-on: [push]
+name: Build and Release Application
+run-name: 🚀 Build & Release triggered by ${{ github.actor }}
+
+# Тригери: Пуш у гілку main або створення тегу (наприклад, v1.0.0)
+on:
+  push:
+    branches: [ "main" ]
+    tags:
+      - 'v*' # Спрацьовує, якщо тег починається з 'v'
+
+permissions:
+  contents: write # Необхідно для створення релізу
+
 jobs:
-  Explore-GitHub-Actions:
+  build:
+    name: 🏗️ Build Application
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v5
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 👤 Display Author Info
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "👤 Автор змін: ${{ github.actor }}"
+          echo "📧 Подія: ${{ github.event_name }}"
+          echo "🌿 Гілка/Тег: ${{ github.ref }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+      # --- ТУТ МАЄ БУТИ ВАША КОМАНДА ЗБІРКИ ---
+      # Приклад для Node.js: npm install && npm run build
+      # Приклад для Go: go build -o myapp main.go
+      # Для демонстрації ми створимо текстовий файл і запакуємо його
+      - name: 🔨 Build process (Simulation)
+        run: |
+          mkdir build_output
+          echo "Build date: $(date)" > build_output/info.txt
+          echo "Built by: ${{ github.actor }}" >> build_output/info.txt
+          # Створюємо архів (умовний "додаток")
+          zip -r my-app-release.zip build_output/
+
+      - name: 📤 Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: built-app
+          path: my-app-release.zip
+          retention-days: 1
+
+  release:
+    name: 📦 Publish GitHub Release
+    needs: build # Чекаємо завершення збірки
+    if: startsWith(github.ref, 'refs/tags/') # Виконувати тільки якщо це ТЕГ
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: built-app
+
+      - name: 🚀 Create Release and Upload Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: my-app-release.zip
+          name: Release ${{ github.ref_name }}
+          body: |
+            Автоматичний реліз від ${{ github.actor }}
+            Версія: ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
