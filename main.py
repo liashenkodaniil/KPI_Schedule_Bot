@@ -9,6 +9,7 @@ import asyncio
 import locale
 import os
 
+# - новий коментар для перевірки yml коду
 
 # - Визначення української локалі для встановлення часових українських стандартів
 locale_name = os.getenv("LOCALE_NAME", "ukrainian")
