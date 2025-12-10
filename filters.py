@@ -58,9 +58,13 @@ class MessageManagerFilter(Filter):
     async def __call__(self, message: Message, bot: Bot, state: FSMContext):
         data = await state.get_data()
         if data.get("message_id") and data.get("chat_id") is not None:
-            await bot.delete_message(
-                message_id = data.get("message_id"),
-                chat_id = data.get("chat_id")
-            )
+            try:
+                await bot.delete_message(
+                    message_id = data.get("message_id"),
+                    chat_id = data.get("chat_id")
+                )
+            except:
+                print("Message Manager filter: No message to delete")
+                pass
             await state.clear()
         return True
