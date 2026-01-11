@@ -1,4 +1,5 @@
 ### --- Модуль контролю бази даних PostgreSQL --- ###
+import sqlalchemy
 from aiogram.fsm.storage.redis import RedisStorage
 from aiogram.fsm.state import State, StatesGroup
 import redis.asyncio as aioredis

@@ -9,6 +9,12 @@ import asyncio
 import locale
 import os
 
+# - GIT-HUB ПРАКТИКА:
+#   
+# Some text here t check 
+#
+#
+
 # - новий коментар для перевірки yml коду
 
 # - Визначення української локалі для встановлення часових українських стандартів
